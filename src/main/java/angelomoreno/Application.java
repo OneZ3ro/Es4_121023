@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import angelomoreno.entities.StringMod;
 import com.github.javafaker.Faker;
 public class Application {
 
@@ -31,7 +32,16 @@ public class Application {
         orders.add(Order.Ordersetter(products, 40, costumer4));
         orders.add(Order.Ordersetter(products, 5, costumer5));
 
+        StringMod wrapper = s -> "------------------------------ " + s + " ------------------------------";
+        System.out.println(wrapper.modify("Es1"));
         primoEs(orders);
+        System.out.println();
+
+//        System.out.println(wrapper.modify("Es2"));
+//        secondoEs(orders);
+
+        System.out.println(wrapper.modify("Es3"));
+        terzoEs(products);
     }
     public static List<Product> createProduct() {
         String[] strArr = {"Books", "Baby", "Boys"};
@@ -49,5 +59,18 @@ public class Application {
 
     public static void primoEs(List<Order> orders) {
         orders.stream().collect(Collectors.groupingBy(Order::getCustomer)).forEach(((costumer, ordini) -> System.out.println("Costumer " + costumer + ": " + ordini)));
+    }
+
+//    public static void secondoEs(List<Order> orders) {
+//        orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer())).forEach(((costumer, ordini) -> System.out.println("Costumer " + costumer + "\nTot: " + ordini.stream().mapToDouble(order -> order.getProducts().stream().forEach(Product::getPrice)).sum())));
+//    }
+
+    public static void terzoEs(List<Product> products) {
+//        DoubleSummaryStatistics priceStatistic = products.stream().collect(Collectors.summarizingDouble(product -> product.getPrice()));
+//        System.out.println("Il prodotto più costoso ha un prezzo di: " + priceStatistic.getMax() + "€");
+        List<Product> moreThan250 = new ArrayList<>(products.stream().filter(product -> product.getPrice() > 250).sorted(Comparator.comparing(Product::getPrice)).toList());
+        System.out.println("------------ Prodotti costosi (più di 250€) ------------");
+        moreThan250.forEach(System.out::println);
+
     }
 }
