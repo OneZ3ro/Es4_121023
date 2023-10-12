@@ -98,6 +98,7 @@ public class Application {
                 FileUtils.writeStringToFile(file, products.get(i).getName() + "@" + products.get(i).getCategory() + "@" + products.get(i).getPrice() + "#", StandardCharsets.UTF_8, true);
             }
             String contenuto = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            System.out.println("Nel file ho trovato: " + contenuto);
         } catch (IOException ex) {
             ex.getMessage();
         }
