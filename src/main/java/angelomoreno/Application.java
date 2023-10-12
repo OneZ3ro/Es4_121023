@@ -42,8 +42,8 @@ public class Application {
         primoEs(orders);
         System.out.println();
 
-//        System.out.println(wrapper.modify("Es2"));
-//        secondoEs(orders);
+        System.out.println(wrapper.modify("Es2"));
+        secondoEs(orders);
 
         System.out.println(wrapper.modify("Es3"));
         terzoEs(products);
@@ -75,9 +75,9 @@ public class Application {
         orders.stream().collect(Collectors.groupingBy(Order::getCustomer)).forEach(((costumer, ordini) -> System.out.println("Costumer " + costumer + ": " + ordini)));
     }
 
-//    public static void secondoEs(List<Order> orders) {
-//        orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer())).forEach(((costumer, ordini) -> System.out.println("Costumer " + costumer + "\nTot: " + ordini.stream().mapToDouble(order -> order.getProducts().stream().forEach(Product::getPrice)).sum())));
-//    }
+    public static void secondoEs(List<Order> orders) {
+        orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer(), Collectors.summingDouble(ordini -> ordini.getProducts().stream().mapToDouble(product -> product.getPrice()).sum()))).forEach(((costumer, aDouble) -> System.out.println("Costumer " + costumer + "\nTot: " + aDouble)));
+    }
 
     public static void terzoEs(List<Product> products) {
 //        DoubleSummaryStatistics priceStatistic = products.stream().collect(Collectors.summarizingDouble(product -> product.getPrice()));
