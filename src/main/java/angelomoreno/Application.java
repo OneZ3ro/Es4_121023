@@ -42,6 +42,12 @@ public class Application {
 
         System.out.println(wrapper.modify("Es3"));
         terzoEs(products);
+
+//        System.out.println(wrapper.modify("Es2"));
+//        secondoEs(orders);
+
+        System.out.println(wrapper.modify("Es5"));
+        quintoEs(products);
     }
     public static List<Product> createProduct() {
         String[] strArr = {"Books", "Baby", "Boys"};
@@ -71,6 +77,9 @@ public class Application {
         List<Product> moreThan250 = new ArrayList<>(products.stream().filter(product -> product.getPrice() > 250).sorted(Comparator.comparing(Product::getPrice)).toList());
         System.out.println("------------ Prodotti costosi (più di 250€) ------------");
         moreThan250.forEach(System.out::println);
+    }
 
+    public static void quintoEs(List<Product> products) {
+        products.stream().collect(Collectors.groupingBy(product -> product.getCategory())).forEach(((category, prodotti) -> System.out.println("Categoria: " + category + ": " + prodotti.stream().map(product -> product.getPrice()).reduce(0.0, (partialSum, currentElem) -> partialSum + currentElem))));
     }
 }
