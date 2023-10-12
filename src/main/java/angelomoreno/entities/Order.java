@@ -38,6 +38,8 @@ public class Order {
         return products;
     }
 
+    public Costumer getCustomer() {return customer;}
+
     @Override
     public String toString() {
         return "Order{" +

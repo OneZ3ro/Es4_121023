@@ -6,6 +6,8 @@ import angelomoreno.entities.Product;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import com.github.javafaker.Faker;
 public class Application {
 
@@ -17,14 +19,21 @@ public class Application {
         Costumer costumer3 = new Costumer(faker.name().firstName());
         Costumer costumer4 = new Costumer(faker.name().firstName());
         Costumer costumer5 = new Costumer(faker.name().firstName());
-        List<Order> order = new ArrayList<>();
-        order.add(Order.Ordersetter(products, 20, costumer1));
-        order.add(Order.Ordersetter(products, 30, costumer2));
-        order.add(Order.Ordersetter(products, 15, costumer3));
-        order.add(Order.Ordersetter(products, 40, costumer4));
-        order.add(Order.Ordersetter(products, 5, costumer5));
+        List<Order> orders = new ArrayList<>();
+        orders.add(Order.Ordersetter(products, 20, costumer1));
+        orders.add(Order.Ordersetter(products, 10, costumer1));
+        orders.add(Order.Ordersetter(products, 3, costumer1));
+        orders.add(Order.Ordersetter(products, 22, costumer2));
+        orders.add(Order.Ordersetter(products, 18, costumer2));
+        orders.add(Order.Ordersetter(products, 20, costumer3));
+        orders.add(Order.Ordersetter(products, 30, costumer3));
+        orders.add(Order.Ordersetter(products, 15, costumer3));
+        orders.add(Order.Ordersetter(products, 40, costumer4));
+        orders.add(Order.Ordersetter(products, 5, costumer5));
+
+        primoEs(orders);
     }
-    public static List<Product> createProduct () {
+    public static List<Product> createProduct() {
         String[] strArr = {"Books", "Baby", "Boys"};
         Supplier<Product> productSupplier = () -> {
             Faker faker = new Faker(Locale.ITALY);
@@ -36,5 +45,9 @@ public class Application {
             products.add(productSupplier.get());
         }
         return products;
+    }
+
+    public static void primoEs(List<Order> orders) {
+        orders.stream().collect(Collectors.groupingBy(Order::getCustomer)).forEach(((costumer, ordini) -> System.out.println("Costumer " + costumer + ": " + ordini)));
     }
 }
