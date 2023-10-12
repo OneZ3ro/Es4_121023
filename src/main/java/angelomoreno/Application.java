@@ -4,12 +4,17 @@ import angelomoreno.entities.Costumer;
 import angelomoreno.entities.Order;
 import angelomoreno.entities.Product;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import angelomoreno.entities.StringMod;
 import com.github.javafaker.Faker;
+import org.apache.commons.io.FileUtils;
+
 public class Application {
 
     public static void main(String[] args) {
@@ -48,6 +53,9 @@ public class Application {
 
         System.out.println(wrapper.modify("Es5"));
         quintoEs(products);
+
+        System.out.println(wrapper.modify("Es6"));
+        sestoEs(products);
     }
     public static List<Product> createProduct() {
         String[] strArr = {"Books", "Baby", "Boys"};
@@ -81,5 +89,17 @@ public class Application {
 
     public static void quintoEs(List<Product> products) {
         products.stream().collect(Collectors.groupingBy(product -> product.getCategory())).forEach(((category, prodotti) -> System.out.println("Categoria: " + category + ": " + prodotti.stream().map(product -> product.getPrice()).reduce(0.0, (partialSum, currentElem) -> partialSum + currentElem))));
+    }
+
+    public static void sestoEs(List<Product> products) {
+        File file = new File("src/output.text");
+        try {
+            for (int i = 0; i < products.size(); i++) {
+                FileUtils.writeStringToFile(file, products.get(i).getName() + "@" + products.get(i).getCategory() + "@" + products.get(i).getPrice() + "#", StandardCharsets.UTF_8, true);
+            }
+            String contenuto = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            ex.getMessage();
+        }
     }
 }
