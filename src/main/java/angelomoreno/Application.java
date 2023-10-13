@@ -48,14 +48,19 @@ public class Application {
         System.out.println(wrapper.modify("Es3"));
         terzoEs(products);
 
-//        System.out.println(wrapper.modify("Es2"));
-//        secondoEs(orders);
+//        System.out.println(wrapper.modify("Es4"));
+//        quartoEs(orders);
 
         System.out.println(wrapper.modify("Es5"));
         quintoEs(products);
 
         System.out.println(wrapper.modify("Es6"));
-        sestoEs(products);
+
+        try {
+            sestoEs(products);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static List<Product> createProduct() {
         String[] strArr = {"Books", "Baby", "Boys"};
@@ -76,31 +81,32 @@ public class Application {
     }
 
     public static void secondoEs(List<Order> orders) {
-        orders.stream().collect(Collectors.groupingBy(order -> order.getCustomer(), Collectors.summingDouble(ordini -> ordini.getProducts().stream().mapToDouble(product -> product.getPrice()).sum()))).forEach(((costumer, aDouble) -> System.out.println("Costumer " + costumer + "\nTot: " + aDouble)));
+        orders.stream().collect(Collectors.groupingBy(Order::getCustomer, Collectors.summingDouble(ordini -> ordini.getProducts().stream().mapToDouble(product -> product.getPrice()).sum()))).forEach(((costumer, aDouble) -> System.out.println("Costumer " + costumer + "\nTot: " + aDouble)));
     }
 
     public static void terzoEs(List<Product> products) {
 //        DoubleSummaryStatistics priceStatistic = products.stream().collect(Collectors.summarizingDouble(product -> product.getPrice()));
 //        System.out.println("Il prodotto più costoso ha un prezzo di: " + priceStatistic.getMax() + "€");
-        List<Product> moreThan250 = new ArrayList<>(products.stream().filter(product -> product.getPrice() > 250).sorted(Comparator.comparing(Product::getPrice)).toList());
+        List<Product> moreThan250 = new ArrayList<>(products.stream().filter(product -> product.getPrice() > 290).sorted(Comparator.comparing(Product::getPrice)).toList());
         System.out.println("------------ Prodotti costosi (più di 250€) ------------");
         moreThan250.forEach(System.out::println);
     }
 
+//    public static void quartoEs(List<Order> orders) {
+//        orders.stream().collect(Collectors.summingDouble(order -> order.getProducts().stream().mapToDouble(product -> product.getPrice()).sum()));
+//    }
+
     public static void quintoEs(List<Product> products) {
-        products.stream().collect(Collectors.groupingBy(product -> product.getCategory())).forEach(((category, prodotti) -> System.out.println("Categoria: " + category + ": " + prodotti.stream().map(product -> product.getPrice()).reduce(0.0, (partialSum, currentElem) -> partialSum + currentElem))));
+        products.stream().collect(Collectors.groupingBy(Product::getCategory)).forEach(((category, prodotti) -> System.out.println("Categoria " + category + ": " + prodotti.stream().map(product -> product.getPrice()).reduce(0.0, (partialSum, currentElem) -> partialSum + currentElem))));
     }
 
-    public static void sestoEs(List<Product> products) {
+    public static void sestoEs(List<Product> products) throws IOException {
         File file = new File("src/output.text");
-        try {
+            FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8);
             for (int i = 0; i < products.size(); i++) {
                 FileUtils.writeStringToFile(file, products.get(i).getName() + "@" + products.get(i).getCategory() + "@" + products.get(i).getPrice() + "#", StandardCharsets.UTF_8, true);
             }
             String contenuto = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
             System.out.println("Nel file ho trovato: " + contenuto);
-        } catch (IOException ex) {
-            ex.getMessage();
-        }
     }
 }
